@@ -1,11 +1,26 @@
 <script setup lang="ts">
-// Placeholder HomeView for WaveLog main screen with ocean theme and navigable "+ Log New Session" button
+// HomeView: Connects to Pinia's sessionStore and filterStore to display session cards and a filter bar.
 
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useSessionStore } from '@/stores/sessionStore'
+import { useFilterStore } from '@/stores/filterStore'
+
+import FilterBar from '@/components/FilterBar.vue'
+import SessionCard from '@/components/SessionCard.vue'
+
 const router = useRouter()
+const sessionStore = useSessionStore()
+const filterStore = useFilterStore()
+
 function goToLogSession() {
   router.push('/log')
 }
+
+// Memoized: get filtered sessions array
+const filteredSessions = computed(() =>
+  sessionStore.getSessionsFiltered(filterStore.filters)
+)
 </script>
 
 <template>
@@ -20,9 +35,22 @@ function goToLogSession() {
         + Log New Session
       </button>
     </div>
-    <div class="session-list-placeholder">
-      <p>Past surf sessions will be shown here as cards, each sparkling with mood icons.</p>
-      <div class="session-placeholder-card">No sessions yet — go log your first ride! 🏄‍♂️</div>
+    <FilterBar :filters="filterStore.filters" />
+    <div
+      v-if="filteredSessions.length === 0"
+      class="session-empty-placeholder"
+    >
+      <p>No sessions yet — go log your first ride!</p>
+    </div>
+    <div
+      v-else
+      class="session-list"
+    >
+      <SessionCard
+        v-for="session in filteredSessions"
+        :key="session.id"
+        :session="session"
+      />
     </div>
   </div>
 </template>
@@ -33,7 +61,10 @@ function goToLogSession() {
   display: flex;
   flex-direction: column;
   gap: 2.1rem;
+  min-height: 60vh;
 }
+
+/* Header Row */
 .home-header {
   display: flex;
   justify-content: space-between;
@@ -42,8 +73,10 @@ function goToLogSession() {
   border-radius: 18px;
   padding: 0.7rem 1rem 0.7rem 1.1rem;
   box-shadow: 0 4px 12px #4F8FBF16;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.6rem;
 }
+
+/* Icon styles */
 .wave-emoji {
   font-size: 2em;
   margin-right: 0.4em;
@@ -72,27 +105,32 @@ function goToLogSession() {
 .surf-emoji {
   font-size: 1.36em;
 }
-.session-list-placeholder {
+
+.session-empty-placeholder {
   text-align: center;
   color: #4689a2;
-  margin-top: 1rem;
+  margin-top: 2.1rem;
+  font-size: 1.14em;
 }
-.session-placeholder-card {
-  display: inline-block;
-  margin-top: 1.3rem;
-  background: #e0f7fa88;
-  border: 1.2px dashed #2EC4B6;
-  border-radius: 18px;
-  color: #555;
-  font-size: 1.05em;
-  padding: 1.4em 2.2em;
-  min-width: 170px;
+
+.session-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25em;
+  max-height: 520px;
+  overflow-y: auto;
+  margin-top: 0.4em;
+  padding-bottom: 0.8em;
 }
+
 @media (max-width: 600px) {
   .home-header {
     flex-direction: column;
     gap: 0.6em;
     padding: 0.7rem 0.8rem;
+  }
+  .wave-home-view {
+    gap: 1.1rem;
   }
 }
 </style>
