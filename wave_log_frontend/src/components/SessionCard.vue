@@ -1,26 +1,26 @@
 <script setup lang="ts">
+import type { Session } from '@/stores/sessionStore'
 // PUBLIC_INTERFACE
 defineProps<{
-  session?: object // In the future this can be expanded with correct types/interfaces
+  session?: Session
 }>()
 </script>
 
 <template>
   <div class="wavelog-session-card ocean-theme">
-    <!-- Placeholder for session card ocean-style display -->
     <div class="session-header">
-      <span class="session-date">Date</span>
-      <span class="mood-emoji">🌊</span>
+      <span class="session-date">{{ session?.date }}</span>
+      <span class="mood-emoji">{{ session?.mood || "🌊" }}</span>
     </div>
     <div class="session-main-info">
-      <div class="spot-name">Spot Name</div>
-      <div class="board-type">Board</div>
-      <div class="wave-count">Waves: --</div>
+      <div class="spot-name">{{ session?.spot }}</div>
+      <div class="board-type">{{ session?.board }}</div>
+      <div class="wave-count">Waves: {{ session?.waves }}</div>
     </div>
-    <div class="session-actions">
-      <!-- Placeholder for edit, view, or delete (to be implemented) -->
+    <!-- Optionally, actions section could be implemented later -->
+    <!-- <div class="session-actions">
       <button class="view-btn sea-btn">View</button>
-    </div>
+    </div> -->
   </div>
 </template>
 
