@@ -1,0 +1,4 @@
+{
+    "command": "npm install && npm run type-check && npm run test:unit -- --run",
+    "working_directory": "/home/kavia/workspace/code-generation/wavelog-108723-187a6745/wave_log_frontend"
+}
