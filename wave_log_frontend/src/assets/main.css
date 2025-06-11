@@ -1,35 +1,273 @@
 @import './base.css';
 
+/* OCEANIC THEME ROOT COLORS */
+:root {
+  --ocean-primary: #4F8FBF;
+  --ocean-secondary: #F5E9DA;
+  --ocean-accent: #2EC4B6;
+  --ocean-soft-bg: #e0f7fa;
+  --ocean-light-beach: #b8e0ef;
+  --ocean-muted: #8fc8de;
+  --ocean-dark: #19708f;
+  --ocean-brown-sand: #e8cfa8;
+  --ocean-card-radius: 18px;
+  --ocean-btn-radius: 14px;
+  --ocean-transition: 0.18s cubic-bezier(.33,.9,.4,1.16);
+}
+
+/* App-wide base container */
 #app {
+  background: linear-gradient(180deg, var(--ocean-soft-bg) 0%, var(--ocean-light-beach) 70%, var(--ocean-secondary) 100%);
+  min-height: 100vh;
+  font-weight: normal;
+  color: var(--ocean-dark);
+  padding: 2rem;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
 }
 
+/* Typography */
+body {
+  background: var(--ocean-soft-bg);
+  font-family: 'Inter', system-ui, sans-serif;
+  color: var(--ocean-dark);
+}
+
+/* Anchor + ocean accent effect */
 a,
+.ocean-link,
 .green {
   text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
+  color: var(--ocean-accent);
+  font-weight: 600;
+  padding: 2px 3px;
+  border-radius: 4px;
+  transition: background-color 0.18s, color 0.18s;
+}
+a:hover,
+.ocean-link:hover {
+  background: var(--ocean-secondary);
+  color: var(--ocean-primary);
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+/* BUTTONS (unified beachy style) */
+.ocean-theme .sea-btn,
+.sea-btn {
+  background: linear-gradient(93deg, var(--ocean-accent) 60%, var(--ocean-primary) 100%);
+  color: #fff;
+  border: none;
+  border-radius: var(--ocean-btn-radius);
+  font-weight: 700;
+  font-size: 1.07em;
+  padding: 0.28em 1.15em;
+  box-shadow: 0 2px 8px #2ec4b61c, 0 1.5px 3px #4f8fbf26;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  transition: background var(--ocean-transition), color var(--ocean-transition);
+}
+.ocean-theme .sea-btn:hover,
+.sea-btn:hover {
+  background: linear-gradient(95deg, var(--ocean-primary) 69%, var(--ocean-accent) 100%);
+  color: #fff;
+}
+.sea-btn[disabled], .sea-btn[aria-disabled="true"] {
+  background: #dee6ec;
+  color: #aaa;
+  cursor: not-allowed;
+  opacity: 0.72;
+  box-shadow: none;
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
+input[type="submit"].sea-btn::before {
+  content: "🏄‍♂️ ";
+  margin-right: .25em;
+}
 
+/* OCEANIC CARDS */
+.ocean-theme,
+.ocean-card,
+.session-card,
+.stats-card {
+  background: linear-gradient(95deg, var(--ocean-soft-bg) 80%, var(--ocean-secondary) 100%);
+  border-radius: var(--ocean-card-radius);
+  box-shadow: 0 2px 11px #2ec4b620;
+  border: 1.2px solid var(--ocean-accent);
+}
+
+/* Notification and banner styling */
+.ocean-theme .wavelog-notification-banner,
+.wavelog-notification-banner {
+  background: var(--ocean-soft-bg);
+  color: var(--ocean-dark);
+  border-radius: 11px;
+  border: 1.2px solid var(--ocean-accent);
+  font-weight: 600;
+  box-shadow: 0 1px 5px #2ec4b61b;
+}
+.wavelog-notification-banner .notif-icon,
+.notif-icon {
+  font-size: 1.36em;
+  margin-right: 0.44em;
+}
+
+/* Card highlights */
+.ocean-card-highlight {
+  background: #fcf7e7;
+  border: 1.1px solid #ffd166;
+  border-radius: 13px;
+  color: #7a5a24;
+  font-size: 1.06em;
+  font-weight: 700;
+  box-shadow: 0 1.5px 7px #f5e9da29;
+  padding: 0.75em 1em;
+  margin: 0.4em 0;
+}
+
+.ocean-bg-wave {
+  background: url("data:image/svg+xml;utf8,<svg width='100%' height='68' xmlns='http://www.w3.org/2000/svg'><path d='M0,48 Q30,58 60,48 T120,48 T240,58 T360,48 V68 H0 Z' fill='%23b8e0ef' opacity='0.19'/></svg>");
+  background-repeat: repeat-x;
+  background-position: bottom center;
+  min-height: 68px;
+}
+
+/* Inputs and forms */
+.ocean-input,
+input.ocean-input,
+select.ocean-input,
+textarea.ocean-input {
+  background: #e0f7fa44;
+  border: 1px solid #2ec4b680;
+  border-radius: 8px;
+  padding: 0.56em 0.7em;
+  color: #217390;
+  min-width: 80px;
+  font-size: 1.07em;
+  width: 100%;
+  margin-bottom: 0.11em;
+  transition: border var(--ocean-transition), background var(--ocean-transition);
+  outline: none;
+}
+.ocean-input:focus {
+  border: 1.3px solid var(--ocean-primary);
+  background: #e0f7fa77;
+}
+input[disabled],
+select[disabled] {
+  background: #f5e9da88;
+  color: #9aa6a6;
+  opacity: 0.68;
+}
+
+.ocean-form-row,
+.form-group.ocean-form-row {
+  display: flex;
+  gap: 0.7em;
+  align-items: flex-end;
+}
+
+.input-error {
+  color: #c22d37;
+  font-size: 0.97em;
+  margin-top: 0.07em;
+  font-weight: 600;
+}
+
+/* Mood emoji selector buttons */
+.ocean-theme .mood-emoji-btn,
+.mood-emoji-btn {
+  background: #fff;
+  border: 2.2px solid #e0f7fa77;
+  border-radius: 100px;
+  padding: 0.1em 0.19em 0.1em 0.23em;
+  font-size: 1.45em;
+  margin: 0 0.04em;
+  cursor: pointer;
+  line-height: 1.18;
+  filter: drop-shadow(0 1.5px 2px #2ec4b628);
+  transition: border .15s, background .15s;
+  min-width: 2em;
+}
+.mood-emoji-btn.selected,
+.mood-emoji-btn:focus {
+  border: 2.2px solid var(--ocean-primary);
+  background: var(--ocean-secondary);
+}
+.mood-emoji-btn:hover {
+  border: 2.2px solid var(--ocean-accent);
+  background: #b8e0ef44;
+}
+
+/* Soft highlight containers */
+.ocean-highlight, .wave-highlight {
+  background: #e0f7fa99;
+  border-radius: 9px;
+  padding: 0.8em 1em;
+  border: 1px solid #b8e0ef;
+  color: #217390;
+  font-size: 1.04em;
+  margin: 0.3em 0 1.2em 0;
+  box-shadow: 0 2px 8px #4f8fbf0f;
+}
+
+.ocean-pill {
+  display: inline-block;
+  padding: 0.19em 1.1em 0.13em 1.1em;
+  border-radius: 32px;
+  background: #e0f7fa;
+  border: 1.4px solid #ffd166;
+  color: #4F8FBF;
+  font-weight: 800;
+  font-size: 1.1em;
+  margin-left: 0.3em;
+  box-shadow: 0 2px 6px #ffd16636;
+}
+
+/* Utility: emoji icon highlight container */
+.ocean-emoji-icon {
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.25em;
+  vertical-align: middle;
+  margin-right: 0.2em;
+}
+
+/* Session card header icons (wave, surfboard, etc) */
+.session-emoji,
+.wave-emoji,
+.surf-emoji,
+.beach-emoji,
+.sunset-emoji {
+  font-size: 1.2em;
+  vertical-align: middle;
+}
+.wave-emoji {
+  color: var(--ocean-primary);
+  filter: drop-shadow(0 1.5px 2px var(--ocean-accent)50);
+}
+.surf-emoji {
+  color: var(--ocean-accent);
+}
+.beach-emoji,
+.sunset-emoji {
+  color: #ffd166;
+}
+
+/* Card/section headers and banners */
+.ocean-section-header {
+  background: linear-gradient(90deg, var(--ocean-secondary) 70%, #e0f7fa25 100%);
+  border-bottom: 1.5px solid #2ec4b626;
+  color: var(--ocean-primary);
+  font-size: 1.17em;
+  font-weight: 700;
+  padding: 0.6em 1.2em 0.6em 1.8em;
+  letter-spacing: 1px;
+  border-radius: 12px 12px 0 0;
+}
+
+@media (max-width: 1024px) {
   #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
+    padding: 1rem 0.4rem 1.3rem 0.4rem;
+    min-width: unset;
+    max-width: unset;
   }
 }
