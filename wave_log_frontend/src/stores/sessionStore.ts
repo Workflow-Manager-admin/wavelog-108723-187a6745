@@ -16,35 +16,99 @@ export type Session = {
 
 /**
  * Sample sessions for development/testing.
+ * These cover different dates, spots, boards, moods, wave counts, swell, wind, tide, and notes for robust demo/stats.
  */
 const SAMPLE_SESSIONS: Session[] = [
   {
     id: 's1',
-    date: '2024-06-18',
+    date: '2024-06-19',
     spot: 'Malibu',
     board: 'Shortboard',
-    waves: 11,
+    waves: 14,
     mood: '😀',
-    notes: 'Glass off at sunset, mellow crowd. Fun rights all session.'
+    notes: 'Clean, peaky sunset glass-off. Shared an epic set with friends. Swell: Medium, Wind: Calm, Tide: High'
   },
   {
     id: 's2',
-    date: '2024-06-16',
-    spot: 'Huntington Beach',
-    board: 'Fish',
-    waves: 8,
-    mood: '😎',
-    notes: 'Peaky beachbreak but a bit windy. Fast drops, some barrels.'
+    date: '2024-06-18',
+    spot: 'Trestles',
+    board: 'Longboard',
+    waves: 10,
+    mood: '🤙',
+    notes: 'Long mellow rides and good company. Dolphins spotted! Swell: Small, Wind: Offshore, Tide: Mid'
   },
   {
     id: 's3',
-    date: '2024-06-10',
+    date: '2024-06-17',
+    spot: 'Huntington Beach',
+    board: 'Fish',
+    waves: 7,
+    mood: '😎',
+    notes: 'Peaky beachbreak, windy but fun. Couple surprise barrels. Swell: Medium, Wind: Onshore, Tide: Low'
+  },
+  {
+    id: 's4',
+    date: '2024-06-14',
+    spot: 'Malibu',
+    board: 'Shortboard',
+    waves: 9,
+    mood: '🌊',
+    notes: 'Zen solo dawn patrol—clean lined-up sets. Swell: Small, Wind: Calm, Tide: Mid'
+  },
+  {
+    id: 's5',
+    date: '2024-06-12',
     spot: 'Trestles',
+    board: 'Fish',
+    waves: 12,
+    mood: '🏄‍♂️',
+    notes: 'Found a secret peak, best rides in weeks! Swell: Large, Wind: Offshore, Tide: High'
+  },
+  {
+    id: 's6',
+    date: '2024-06-10',
+    spot: 'Huntington Beach',
     board: 'Longboard',
-    waves: 14,
+    waves: 5,
+    mood: '😴',
+    notes: 'Slow day, tired after work but worth it. Swell: Tiny, Wind: Calm, Tide: High'
+  },
+  {
+    id: 's7',
+    date: '2024-06-07',
+    spot: 'Malibu',
+    board: 'Longboard',
+    waves: 15,
+    mood: '😀',
+    notes: 'Classic Malibu! Endless nose rides, sunny all morning. Swell: Medium, Wind: Sideoff, Tide: Mid'
+  },
+  {
+    id: 's8',
+    date: '2024-06-05',
+    spot: 'Trestles',
+    board: 'Shortboard',
+    waves: 13,
+    mood: '😡',
+    notes: 'Crowded lineup, some localism... but scored a couple bombs. Swell: Large, Wind: Swell, Tide: Low'
+  },
+  {
+    id: 's9',
+    date: '2024-06-03',
+    spot: 'Huntington Beach',
+    board: 'Fish',
+    waves: 6,
+    mood: '😎',
+    notes: 'Just cruised, fun warmup. Swell: Small, Wind: Calm, Tide: Mid'
+  },
+  {
+    id: 's10',
+    date: '2024-05-31',
+    spot: 'Malibu',
+    board: 'Shortboard',
+    waves: 10,
     mood: '🤙',
-    notes: 'Super clean, long rides. Good company and dolphins!'
-  }
+    notes: 'Evening sun and glassy conditions. Swell: Medium, Wind: Offshore, Tide: High'
+  },
 ]
 
 // PUBLIC_INTERFACE
