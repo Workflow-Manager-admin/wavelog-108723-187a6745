@@ -3,10 +3,12 @@ import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useSessionStore } from '@/stores/sessionStore'
 import LogSessionForm from '@/components/LogSessionForm.vue'
+import { useNotificationStore } from '@/stores/notificationStore'
 
 const route = useRoute()
 const router = useRouter()
 const sessionStore = useSessionStore()
+const notificationStore = useNotificationStore()
 
 // Fetch session ID from route (e.g., /session/:id)
 const sessionId = computed(() => route.params.id as string)
@@ -36,6 +38,13 @@ function onEditSave(editedSession: SessionWithExtras) {
   sessionStore.updateSession(sessionId.value, { ...editedSession })
   editMode.value = false
   logSessionFormKey.value++
+
+  // Feedback: show edit success notification
+  notificationStore.addNotification({
+    message: 'Session updated successfully!',
+    type: 'success',
+    timeoutMs: 4000
+  })
 }
 
 // Handler for canceling edit
@@ -48,6 +57,12 @@ function onEditCancel() {
 function deleteSession() {
   if (window.confirm('Are you sure you want to delete this surf session? This cannot be undone.')) {
     sessionStore.deleteSession(sessionId.value)
+    // Feedback: deleted banner (use warning as more impactful than success for delete/undo)
+    notificationStore.addNotification({
+      message: 'Session deleted.',
+      type: 'warning',
+      timeoutMs: 4000
+    })
     router.push({ path: '/' })
   }
 }

@@ -3,10 +3,11 @@ import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useSessionStore } from '@/stores/sessionStore'
 import { useFilterStore } from '@/stores/filterStore'
+import { useNotificationStore } from '@/stores/notificationStore'
 
-// Option lists for dropdowns/selects
 const filterStore = useFilterStore()
 const sessionStore = useSessionStore()
+const notificationStore = useNotificationStore()
 const router = useRouter()
 
 // Ocean-appropriate sample options
@@ -58,7 +59,7 @@ const form = ref({
   wind: '',
   tide: '',
 })
-const errors = ref({
+const errors = ref<Record<string, string>>({
   date: '',
   spot: '',
   board: '',
@@ -116,10 +117,24 @@ function blurField(field: string) {
   validateField(field)
 }
 
-// PUBLIC_INTERFACE
+/**
+ * PUBLIC_INTERFACE
+ * Enhanced submitForm: shows notification banners on form error or success.
+ */
 function submitForm(e: Event) {
   e.preventDefault()
-  if (!validateAll()) return
+  // Check validation: if not valid, show error feedback
+  if (!validateAll()) {
+    // Find first error
+    const firstField = Object.keys(errors.value).find(k => !!errors.value[k])
+    const msg = errors.value[firstField!] || 'Please fill all required fields.'
+    notificationStore.addNotification({
+      message: msg,
+      type: 'error',
+      timeoutMs: 5000
+    })
+    return
+  }
 
   // Compose session object (Pinia Session definition + extended fields swell/wind/tide/notes)
   const session = {
@@ -135,6 +150,12 @@ function submitForm(e: Event) {
     tide: form.value.tide
   }
   sessionStore.addSession(session)
+  // Feedback: success banner
+  notificationStore.addNotification({
+    message: 'Session added successfully!',
+    type: 'success',
+    timeoutMs: 4200
+  })
   router.push({ path: '/' })
 }
 

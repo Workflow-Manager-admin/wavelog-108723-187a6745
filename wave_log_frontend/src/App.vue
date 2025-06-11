@@ -1,5 +1,15 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+import { computed } from 'vue'
+import { useNotificationStore } from '@/stores/notificationStore'
+import NotificationBanner from '@/components/NotificationBanner.vue'
+
+// Notification system for banners
+const notificationStore = useNotificationStore()
+const notifications = computed(() => notificationStore.notifications)
+function dismiss(id: string) {
+  notificationStore.dismissNotification(id)
+}
 </script>
 
 <template>
@@ -38,9 +48,18 @@ import { RouterLink, RouterView } from 'vue-router'
         </RouterLink>
       </nav>
       <div class="notifications-slot">
-        <!-- Notifications: seashell bell -->
+        <!-- Notifications: seashell bell and banners from notificationStore -->
         <slot name="notifications">
-          <span class="notif-icon" aria-label="Notifications">🐚</span>
+          <div>
+            <NotificationBanner
+              v-for="notif in notifications"
+              :key="notif.id"
+              :message="notif.message"
+              :type="notif.type"
+              v-show="notif.message"
+              @click="dismiss(notif.id)"
+            />
+          </div>
         </slot>
       </div>
     </header>

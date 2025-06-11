@@ -1,14 +1,17 @@
 <script setup lang="ts">
 // HomeView: Connects to Pinia's sessionStore and filterStore to display session cards and a filter bar.
 
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useSessionStore } from '@/stores/sessionStore'
 import { useFilterStore } from '@/stores/filterStore'
+import { useNotificationStore } from '@/stores/notificationStore'
 
 import FilterBar from '@/components/FilterBar.vue'
 import SessionCard from '@/components/SessionCard.vue'
 
+// --- Notification & Reminder Logic ---
+const notificationStore = useNotificationStore()
 const router = useRouter()
 const sessionStore = useSessionStore()
 const filterStore = useFilterStore()
@@ -21,6 +24,33 @@ function goToLogSession() {
 const filteredSessions = computed(() =>
   sessionStore.getSessionsFiltered(filterStore.filters)
 )
+
+// --- Daily Reminder Banner logic ---
+// When user enters HomeView, show reminder if no session today.
+function checkDailyLogReminder() {
+  const todayStr = new Date().toISOString().slice(0, 10)
+  const hasSessionToday = sessionStore.sessions.some(s => s.date === todayStr)
+  if (!hasSessionToday) {
+    // Don't double-spam the same banner if it is already visible
+    const reminderMsg = "Daily reminder: Log your surf session for today! 🐚"
+    const alreadyShown = notificationStore.notifications.some(
+      n =>
+        n.type === 'info' &&
+        n.message.startsWith("Daily reminder") // fuzzy match in case more than one
+    )
+    if (!alreadyShown) {
+      notificationStore.addNotification({
+        message: reminderMsg,
+        type: 'info',
+        timeoutMs: 10000
+      })
+    }
+  }
+}
+
+onMounted(() => {
+  checkDailyLogReminder()
+})
 </script>
 
 <template>
