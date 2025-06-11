@@ -1,5 +1,55 @@
 <script setup lang="ts">
-// Placeholder for StatsDashboardView with on-theme, cheerful ocean dashboard style
+// StatsDashboardView fetches & derives statistics and passes data to StatsCharts (ocean vibe).
+import { computed } from 'vue'
+import { useSessionStore } from '@/stores/sessionStore'
+import StatsCharts from '@/components/StatsCharts.vue'
+
+// Fetch all sessions from Pinia store
+const sessionStore = useSessionStore()
+const sessions = computed(() => sessionStore.sessions)
+
+// --- Stats calculations ---
+
+// 1. Most Visited Spot (by session count)
+const mostVisitedSpot = computed(() => {
+  const counts: {[spot: string]: number} = {}
+  sessions.value.forEach(s => {
+    counts[s.spot] = (counts[s.spot] ?? 0) + 1
+  })
+  let max = 0; let top = ''
+  Object.entries(counts).forEach(([spot, count]) => {
+    if (count > max) { max = count; top = spot }
+  })
+  return { spot: top, count: max }
+})
+
+// 2. Board Usage Breakdown (returns array: [{board, count}])
+const boardUsage = computed(() => {
+  const boardCounts: {[board: string]: number} = {}
+  sessions.value.forEach(s => {
+    boardCounts[s.board] = (boardCounts[s.board] ?? 0) + 1
+  })
+  // Convert to array and sort descending count
+  return Object.entries(boardCounts)
+    .map(([board, count]) => ({ board, count }))
+    .sort((a, b) => b.count - a.count)
+})
+
+// 3. Mood Trend Over Time (date ASC list: [{date, mood}])
+const moodTrend = computed(() => {
+  // Extracts [{date, mood}], sorted by date ascending
+  return [...sessions.value]
+    .sort((a, b) => a.date.localeCompare(b.date))
+    .map(s => ({ date: s.date, mood: s.mood }))
+})
+
+// Compose data structure to pass to StatsCharts
+const statsData = computed(() => ({
+  mostVisitedSpot: mostVisitedSpot.value,
+  boardUsage: boardUsage.value,
+  moodTrend: moodTrend.value,
+  sessionCount: sessions.value.length
+}))
 </script>
 
 <template>
@@ -8,20 +58,7 @@
       <span class="beach-emoji" aria-label="Stats Dashboard">🏖️</span>
       Surf Stats Dashboard
     </h1>
-    <div class="dashboard-placeholder">
-      <div class="chart-placeholder">
-        <span>📊</span> Most Visited Spot
-      </div>
-      <div class="chart-placeholder">
-        <span>🏄‍♂️</span> Board Usage %<br>
-      </div>
-      <div class="chart-placeholder">
-        <span>😊</span> Mood Trends Over Time
-      </div>
-      <div class="stats-note">
-        Visual surf stats and trend charts will be here soon!
-      </div>
-    </div>
+    <StatsCharts :statsData="statsData" />
   </div>
 </template>
 
